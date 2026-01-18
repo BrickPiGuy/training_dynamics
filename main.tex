@@ -37,6 +37,7 @@
 \usepackage{graphicx}
 \usepackage{doi}
 \usepackage{apacite}
+\usepackage{natbib}
 
 % Make \keywords safe in case arxiv.sty doesn't define it
 \providecommand{\keywords}[1]{\par\noindent\textbf{Keywords: }#1}
@@ -62,6 +63,83 @@
     
 \end{abstract}
 \keywords{LLM Training \and Training Dynamics \and repeated measures ANOVA \and Compute Overhead}
+
+\section{Introduction}
+
+Linearly scaled datasets increase compute overhead during large language model training, limiting scalability, reproducibility, and accessibility across the research ecosystem \citep{Chennareddy2024AdaptiveSampling}. Traditional scaling approaches that proportionally increase model size, dataset size, and compute resources exhibit diminishing returns and are increasingly unsustainable as training costs and infrastructure demands continue to rise \citep{Kaplan2020Scaling,Hoffmann2022Chinchilla}. Although compute-optimal scaling strategies have refined these assumptions, much of the existing literature continues to emphasize endpoint performance outcomes rather than the behavior of models during training.
+
+Research in deep learning demonstrates that training dynamics are not linear or monotonic \citep{Belkin2019BiasVariance,Nakkiran2019DeepDoubleDescent}. Validation loss and generalization error can temporarily worsen before improving later in training, reflecting nonlinear learning regimes rather than smooth convergence. These behaviors challenge the assumption that training progress follows a steady trajectory and indicate that instability and regression are inherent features of modern neural network optimization.
+
+Despite these observations, limited empirical attention has been given to how compute-efficient training strategies manifest during training, particularly with respect to stability, variability, and reproducibility across token-based intervals. This gap is especially pronounced in constrained compute environments, where inefficiencies and instability may be amplified and where reproducibility is critical. Without systematic measurement of training behavior across repeated observations, claims of efficiency remain incomplete and difficult to generalize beyond large-scale enterprise training contexts. This study addresses that gap by examining training dynamics under fixed, compute-aware conditions rather than relying solely on endpoint efficiency outcomes.
+
+\section{Purpose of Study}
+This study examines training dynamics in a small Llama-style language model trained under a compute-aware, Chinchilla-style token budget using a fixed corpus. Training stability, non-monotonic learning behavior, and between-seed variability are evaluated across token-based training intervals using a quantitative experimental repeated measures design. Prior work demonstrates that training progress in neural networks is often nonlinear, with periods of regression and instability preceding convergence \citep{Belkin2019BiasVariance,Nakkiran2019DeepDoubleDescent}. By shifting the unit of analysis from endpoint performance outcomes to training behavior observed during optimization, this study reframes compute efficiency as a dynamic process and provides empirical insight into model behavior under constrained compute conditions.
+
+\section{Study Purpose and Research Questions}
+
+This study examines training dynamics in a small Llama-style language model trained under a compute-aware, Chinchilla-style token budget using a fixed corpus. The study employs a quantitative experimental repeated measures design to evaluate training stability, non-monotonic learning behavior, and between-seed variability across token-based training intervals. The research questions and corresponding hypotheses are summarized in Table~\ref{tab:rq_summary}, along with the associated independent and dependent variables.
+
+\begin{table}[h]
+\centering
+\caption{Summary of Research Questions, Hypotheses, and Variables}
+\label{tab:rq_summary}
+\begin{tabular}{p{1.5cm} p{2cm} p{4.5cm} p{5cm}}
+\hline
+\textbf{RQ} & \textbf{Hypothesis} & \textbf{Independent Variable(s)} & \textbf{Dependent Variable(s)} \\
+\hline
+RQ1 & H$_{01}$ / H$_{11}$ & 
+Cumulative training tokens processed & 
+Training stability metrics (e.g., volatility, spike rate, backslide frequency) \\
+\hline
+RQ2 & H$_{02}$ / H$_{12}$ & 
+Random seed & 
+Learning trajectory metrics; validation loss and perplexity over training intervals \\
+\hline
+RQ3 & H$_{03}$ / H$_{13}$ & 
+Cumulative training tokens processed & 
+Non-monotonic learning behavior metrics (e.g., validation loss spikes, backslides) \\
+\hline
+RQ4 & H$_{04}$ / H$_{14}$ & 
+Cumulative training tokens processed & 
+Indicators of a statistically stable training phase derived from stability metrics \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Methods}
+
+The experimental design and analytical procedures used in this study are described below.
+
+\subsection{Research Design}
+
+This study uses a quantitative experimental repeated measures design to examine training dynamics in a small Llama-style language model under a compute-aware token budget. Training metrics are collected at fixed token-based intervals throughout the training process, allowing within-subject analysis of changes in model behavior over time. Random seed serves as the unit of replication, enabling repeated observations while holding model architecture, dataset composition, and hardware configuration constant.
+
+\subsection{Model, Data, and Training Environment}
+
+The model architecture consists of a 125-million-parameter Llama-style language model implemented using the \texttt{llama2.c} training framework. Training follows a compute-aware, Chinchilla-style token budget, operationalized as approximately twenty training tokens per model parameter, resulting in a total target of approximately 2.5 billion cumulative training tokens processed.
+
+The training corpus is TinyStories, which is fixed and reused across multiple epochs to meet the specified token budget. All experiments are conducted on an AWS SageMaker \texttt{ml.g5.xlarge} instance. The context length is fixed at 512 tokens, and mixed-precision training is used where supported to improve computational efficiency while maintaining numerical stability.
+
+\subsection{Data Collection and Repeated Measurements}
+
+Training telemetry metrics are recorded at predefined token-based intervals throughout training. At each measurement interval, training loss, validation loss, and validation perplexity are logged. Additional evaluation is conducted at epoch boundaries when these do not coincide with token checkpoints. Multiple independent training runs are executed using different random seeds to support repeated measures analysis and assessment of between-seed variability.
+
+\subsection{Variables and Measures}
+
+The primary dependent variables include validation loss and validation perplexity, along with training stability metrics derived from logged values. Stability metrics include rolling volatility, spike rate, and backslide frequency, which capture non-monotonic and unstable behavior during training. Between-seed variance in validation loss across training intervals is used to assess the influence of random initialization on learning trajectories.
+
+The independent variables include cumulative training tokens processed and random seed, as specified in the corresponding research questions and hypotheses.
+
+\subsection{Statistical Analysis}
+
+Primary analyses are conducted using one-way repeated measures analysis of variance, with training interval treated as the within-subjects factor and random seed treated as the subject. Assumptions of normality and sphericity are evaluated using standard diagnostic procedures. When violations of sphericity are detected, Greenhouse--Geisser corrections are applied.
+
+Linear mixed effects models are used as a robustness check to confirm findings under less restrictive assumptions. Statistical significance is interpreted as evidence of variation in training behavior across intervals rather than directional improvement or degradation. Descriptive statistics and training trajectory visualizations are used to contextualize statistically significant effects.
+
+\subsection{Instruments}
+
+Data are collected using software-based experimental instruments, including a controlled training framework, automated logging routines for training and evaluation metrics, and standardized procedures for computing validation loss and perplexity. Training stability metrics are computed from logged values using predefined statistical criteria. All instruments are designed to ensure consistency, repeatability, and comparability across experimental runs.
+
 
 \bibliographystyle{apacite}
 \bibliography{references}
