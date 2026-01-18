@@ -1,14 +1,69 @@
 \documentclass{article}
-\usepackage{graphicx} % Required for inserting images
 
-\title{training_dynamics}
-\author{Joe Dwyer}
-\date{January 2026}
+% for arxiv submission
+\pdfoutput=1
 
+% --- Unicode cleanup for pdfLaTeX (fixes invisible spaces and common punctuation) ---
+\DeclareUnicodeCharacter{00A0}{ }  % non-breaking space -> normal space
+\DeclareUnicodeCharacter{202F}{ }  % narrow no-break space -> normal space
+\DeclareUnicodeCharacter{200B}{}   % zero-width space -> remove
+
+\DeclareUnicodeCharacter{2212}{-}  % Unicode minus -> hyphen
+\DeclareUnicodeCharacter{2010}{-}  % Unicode hyphen -> hyphen
+\DeclareUnicodeCharacter{2011}{-}  % non-breaking hyphen -> hyphen
+
+\DeclareUnicodeCharacter{2013}{--} % en dash
+\DeclareUnicodeCharacter{2014}{---}% em dash
+\DeclareUnicodeCharacter{2019}{'}  % smart apostrophe
+\DeclareUnicodeCharacter{2009}{ }
+\DeclareUnicodeCharacter{200A}{ }
+
+\usepackage{arxiv}
+\makeatletter
+\providecommand{\headeright}{}
+\makeatother
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{amsmath}        % for \text and other math features
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{textgreek} % allows Greek letters like η in text
+\usepackage{graphicx}
+\usepackage{doi}
+\usepackage{apacite}
+
+% Make \keywords safe in case arxiv.sty doesn't define it
+\providecommand{\keywords}[1]{\par\noindent\textbf{Keywords: }#1}
+
+%% spacing between headings
+\usepackage{titlesec}
+\titlespacing{\section}{0pt}{\parskip}{-\parskip}
+\titlespacing{\subsection}{0pt}{\parskip}{-\parskip}
+\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
+
+\title{A Quantitative Experimental Repeated Measures Study of Training Dynamics in a Small Llama Style Language Model Under a Compute-Aware Token Budget}
+
+\author{ \href{https://orcid.org/0009-0005-5262-1583}{\includegraphics[scale=0.06]{orcid.pdf}\hspace{1mm}Joe Dwyer}\thanks{Once again, I would like to acknowledge the contributions of Jason M. Pittman, PhD. Once again, his advice and knowledge throughout our time working together has been instrumental to my success.} \\
+	Department of Computer Information Science\\
+	ECPI University\\
+	Virginia Beach, VA 23462 \\
+	\texttt{jdwyer@ecpi.edu} \\
+}
 \begin{document}
-
 \maketitle
 
-\section{Introduction}
+\begin{abstract}
+    
+\end{abstract}
+\keywords{LLM Training \and Training Dynamics \and repeated measures ANOVA \and Compute Overhead}
 
+\bibliographystyle{apacite}
+\bibliography{references}
 \end{document}
+
