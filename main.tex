@@ -111,7 +111,7 @@ Indicators of a statistically stable training phase derived from stability metri
 
 \subsection{Model, Data, and Training Environment}
 
-The experimental model was a small Llama-style autoregressive language model implemented in PyTorch \citep{dwyer2026_trainingdynamicscode}. The model contained 4,262,144 trainable parameters and used a vocabulary size of 4,096 tokens, a context length of 128 tokens, four transformer layers, four attention heads, an embedding dimension of 256, rotary positional embeddings, and no dropout. This configuration was selected to support repeated experimental runs under a constrained compute environment while preserving the core architectural characteristics of decoder-only transformer language models.
+The experimental model was a small Llama-style autoregressive language model implemented in PyTorch . The model contained 4,262,144 trainable parameters and used a vocabulary size of 4,096 tokens, a context length of 128 tokens, four transformer layers, four attention heads, an embedding dimension of 256, rotary positional embeddings, and no dropout. This configuration was selected to support repeated experimental runs under a constrained compute environment while preserving the core architectural characteristics of decoder-only transformer language models.
 
 The training corpus was TinyStories, with the training and validation splits held fixed across all experimental runs. A tokenizer with a vocabulary size of 4,096 was trained and reused across runs to ensure consistent tokenization. The experiment used a target token budget of 20,000,000 cumulative training tokens, with evaluation checkpoints scheduled at approximately 1,000,000-token intervals. Because training progressed in fixed token increments determined by batch size, context length, and gradient accumulation, the final logged token count was 20,000,768 tokens.
 
@@ -143,7 +143,7 @@ A linear mixed effects model was also fit as a robustness check, with validation
 
 \subsection{Instruments}
 
-Data were collected using software-based experimental instruments. These included the PyTorch training framework, deterministic run configurations, automated logging routines, checkpoint-based validation procedures, and post-training telemetry scripts. The telemetry pipeline aggregated per-seed metric files, derived stability measures from validation loss trajectories, and generated interval-level summaries for statistical analysis.
+Data were collected using software-based experimental instruments. These included the PyTorch training framework, deterministic run configurations, automated logging routines, checkpoint-based validation procedures, and post-training telemetry scripts \citep{dwyer2026_trainingdynamicscode}. The telemetry pipeline aggregated per-seed metric files, derived stability measures from validation loss trajectories, and generated interval-level summaries for statistical analysis.
 
 \subsection{Procedure}
 
